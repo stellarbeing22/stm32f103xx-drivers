@@ -28,15 +28,6 @@
 
 4.  Driver API Prototypes
     4.1  Peripheral clock control
-    4.2  I2C init
-	4.3  I2C Deinit
-	4.4  I2C IRQInterruptConfig
-	4.5  I2C IRQPriorityConfig
-	4.6  I2C GetFlagStatus
-	4.7  I2C PeripheralControl
-	4.8  I2C ApplicationEventCallback
-	4.9  RCC getPCLK1value
-	4.10 RCC getPLLOutputClk
 
  */
 
@@ -90,6 +81,7 @@ typedef struct
 #define I2C_DUTY_2                         0          //tlow /thigh = 2
 #define I2C_DUTY_16_9                      1          //tlow /thigh = 16/9 (see CCR)
 
+#endif /* INC_STM32F103XX_I2C_DRIVERS_H_ */
 
 
 /***********************************************************************************************************************
@@ -99,34 +91,33 @@ typedef struct
 
 
 /* GPIO peripheral clock */
-void I2C_PeriClockControl(I2C_RegDef_t *pI2Cx, uint8_t En_or_Di);
+void I2C_PeriClockControl(SPI_RegDef_t *pSPIx, uint8_t En_or_Di);
 
 /* Init and Deinit */
-
-void I2C_init(I2C_Handler_t *pI2CHandle);
+void I2C_init(I2C_Handler_t *pSPIHandle);
 void I2C_Deinit(SPI_RegDef_t *pSPIx);
 
 /* Data send and receive */
-//TODO
+void I2C_SendData(I2C_RegDef_t *pSPIx, uint8_t *TxBuffer, uint32_t len);
+void I2C_RecieveData(I2C_RegDef_t *pSPIx, uint8_t *RxBuffer, uint32_t len);
+uint8_t I2C_SendData_IT(I2C_Handler_t *pSPIHandle, uint8_t *TxBuffer, uint32_t len);
+uint8_t I2C_RecieveData_IT(I2C_Handler_t *pSPIHandle, uint8_t *RxBuffer, uint32_t len);
+
 
 /* IQR config and ISR handling */
 void I2C_IRQInterruptConfig(uint8_t IRQNumber, uint8_t En_or_Di);
 void I2C_IRQPriorityConfig(uint8_t IRQNumber,uint32_t IRQPriority);
+void I2C_IRQHandling(I2C_Handler_t *pHandle);
 
 /* Other Peripheral Control APIs */
-uint8_t I2C_GetFlagStatus(I2C_RegDef_t *pI2Cx, uint32_t FlagName);
-void I2C_PeripheralControl(I2C_RegDef_t *pI2Cx, uint8_t En_Or_Di);
+uint8_t I2C_GetFlagStatus(I2C_RegDef_t *pSPIx, uint32_t FlagName);
+void I2C_PeripheralControl(I2C_RegDef_t *pSPIx, uint8_t En_Or_Di);
+void I2C_SSIConfig(I2C_RegDef_t *pSPIx, uint8_t En_Or_Di);
+void I2C_SSOEConfig(I2C_RegDef_t *pSPIx, uint8_t En_Or_Di);
+void I2C_ClearOVRFlag(I2C_RegDef_t *pSPIx);
+void I2C_AbortTransmission(I2C_Handler_t *pSPIHandle);
+void I2C_AbortReception(I2C_Handler_t *pSPIHandle);
 
 /*Application event*/
- void I2C_ApplicationEventCallback(I2C_Handler_t *pI2CHandle,uint8_t AppEve);
-
-/*RCC*/
-uint32_t RCC_getPCLK1value();
-uint32_t RCC_getPLLOutputClk(); //Not implimented
-
-#endif /* INC_STM32F103XX_I2C_DRIVERS_H_ */
-
-
-
-
+ void I2C_ApplicationEventCallback(I2C_Handler_t *pSPIHandle,uint8_t AppEve);
 

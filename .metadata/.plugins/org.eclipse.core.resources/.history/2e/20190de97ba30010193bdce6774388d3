@@ -1,0 +1,57 @@
+/*
+ * SPI_IT.c
+ *
+ *  Created on: Oct 7, 2025
+ *      Author: stellarbeing22
+ */
+
+#include <string.h>
+#include "stm32f103xx.h"
+
+
+void GPIO_For_SPI();
+void SPI_Config();
+
+SPI_Handler_t SPIA;
+int main()
+{
+
+}
+
+
+void GPIO_For_SPI()
+{
+
+	GPIO_Handler_t SPI_NSS,SPI_MOSI,SPI_CLK; //As master MOSI, CLK and NSS are output
+	GPIO_Handler_t SPI_MISO;                 // As master MISO is input
+
+	SPI_NSS.pGPIOBx = GPIOA;
+	SPI_NSS.GPIO_PinConfig.GPIO_PinMode = GPIO_OUT_ALTFN_PP_10;
+	SPI_NSS.GPIO_PinConfig.GPIO_PinNumber = GPIO_Pin_4;
+
+	SPI_MOSI.pGPIOBx = GPIOA;
+	SPI_MOSI.GPIO_PinConfig.GPIO_PinMode = GPIO_OUT_ALTFN_PP_10;
+	SPI_MOSI.GPIO_PinConfig.GPIO_PinNumber = GPIO_Pin_7;
+
+	SPI_CLK.pGPIOBx = GPIOA;
+	SPI_CLK.GPIO_PinConfig.GPIO_PinMode = GPIO_OUT_ALTFN_PP_10;
+	SPI_CLK.GPIO_PinConfig.GPIO_PinNumber = GPIO_Pin_5;
+
+	SPI_MISO.pGPIOBx = GPIOA;
+	SPI_MISO.GPIO_PinConfig.GPIO_PinMode = GPIO_IN_FLOATING;
+	SPI_MISO.GPIO_PinConfig.GPIO_PinNumber = GPIO_Pin_6;
+
+	GPIO_init(&SPI_MISO);
+	GPIO_init(&SPI_MOSI);
+	GPIO_init(&SPI_CLK);
+	GPIO_init(&SPI_NSS);
+
+}
+
+void SPI_Config()
+{
+	SPIA.pSPIx = SPI1;
+	SPIA.SPI_config.SPI_DeviceMode = SPI_DEVICE_MODE_MASTER;
+	SPIA.SPI_config.SPI_BusConfig = SPI_BUS_CONFIG_FDPX;
+	SPIA.
+}

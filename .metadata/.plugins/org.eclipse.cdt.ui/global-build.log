@@ -1,0 +1,14 @@
+21:44:41 **** Incremental Build of configuration Debug for project stm32f103xxDrivers ****
+make -j16 all 
+arm-none-eabi-gcc "../drivers/src/stm32f103xx_i2c_drivers.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DSTM32F103RBTx -DSTM32 -DSTM32F1 -c -I../Inc -I"/home/stellarbeing22/Desktop/STM32F103xxDriversFiles/stm32f103xxDrivers/drivers/inc" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"drivers/src/stm32f103xx_i2c_drivers.d" -MT"drivers/src/stm32f103xx_i2c_drivers.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "drivers/src/stm32f103xx_i2c_drivers.o"
+arm-none-eabi-gcc -o "stm32f103xxDrivers.elf" @"objects.list"   -mcpu=cortex-m3 -T"/home/stellarbeing22/Desktop/STM32F103xxDriversFiles/stm32f103xxDrivers/STM32F103RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="stm32f103xxDrivers.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: stm32f103xxDrivers.elf
+ 
+arm-none-eabi-size  stm32f103xxDrivers.elf 
+arm-none-eabi-objdump -h -S stm32f103xxDrivers.elf  > "stm32f103xxDrivers.list"
+   text	   data	    bss	    dec	    hex	filename
+   2624	      0	   1600	   4224	   1080	stm32f103xxDrivers.elf
+Finished building: default.size.stdout
+ 
+Finished building: stm32f103xxDrivers.list
+ 

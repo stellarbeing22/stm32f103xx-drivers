@@ -30,13 +30,6 @@
     4.1  Peripheral clock control
     4.2  I2C init
 	4.3  I2C Deinit
-	4.4  I2C IRQInterruptConfig
-	4.5  I2C IRQPriorityConfig
-	4.6  I2C GetFlagStatus
-	4.7  I2C PeripheralControl
-	4.8  I2C ApplicationEventCallback
-	4.9  RCC getPCLK1value
-	4.10 RCC getPLLOutputClk
 
  */
 
@@ -107,7 +100,7 @@ void I2C_init(I2C_Handler_t *pI2CHandle);
 void I2C_Deinit(SPI_RegDef_t *pSPIx);
 
 /* Data send and receive */
-//TODO
+
 
 /* IQR config and ISR handling */
 void I2C_IRQInterruptConfig(uint8_t IRQNumber, uint8_t En_or_Di);
