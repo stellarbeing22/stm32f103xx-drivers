@@ -1,0 +1,106 @@
+/*
+ * main.c
+ *
+ *  Created on: Sep 23, 2025
+ *      Author: stellarbeing22
+ */
+#include <string.h>
+#include "stm32f103xx.h"
+
+/*
+ * SPI1_NSS  --> PA4
+ * SPI1_SCK  --> PA5
+ * SPI1_MISO --> PA6
+ * SPI1_MOSI --> PA7
+ * GPIO_AFIO --> 0
+ * 0: No remap (NSS/PA4, SCK/PA5, MISO/PA6, MOSI/PA7)
+ */
+
+
+void SPI1_GPIO_Init(void);
+void SPI1_Init(void);
+
+int main(void)
+{
+	char user_data[] = "Hello World!";
+
+	//Initialising the GPIO configuration  and the clock for
+	//the GPIO peripheral for the SPI comm
+	SPI1_GPIO_Init();
+
+	//Initialising the GPIO configurations and peripheral clock
+	SPI1_Init();
+
+	//Do all of the above done configurations while the SPI peripheral is disabled,
+	// after the configurations is done, just flip the bit 6(SPE) of the SPI_CR1 reg
+
+	//This makes NSS internally High and avoids MODF error
+    //SPI_SSIConfig(SPI1,ENABLE); (use when SSM = Enabled)
+
+	//SSM = 0
+	SPI_SSOEConfig(SPI1,ENABLE);
+
+	//Enabling the SPI2 Peripheral
+	SPI_PeripheralControl(SPI1,ENABLE);
+\
+	//Send data through the MOSI line
+	SPI_SendData(SPI1,(uint8_t *)user_data,strlen(user_data));
+
+	SPI_PeripheralControl(SPI1,DISABLE);
+
+	while(1)
+	{
+	}
+}
+
+
+
+
+
+
+void SPI1_GPIO_Init(void)
+{
+	GPIO_Handler_t SPI_NSS,SPI_MOSI,SPI_CLK; //As master MOSI, CLK and NSS lare output
+	GPIO_Handler_t SPI_MISO;                 // As master MISO is input
+
+	SPI_NSS.pGPIOBx = GPIOA;
+	SPI_NSS.GPIO_PinConfig.GPIO_PinMode = GPIO_OUT_PP_10;
+	SPI_NSS.GPIO_PinConfig.GPIO_PinNumber = GPIO_Pin_4;
+
+	SPI_MOSI.pGPIOBx = GPIOA;
+	SPI_MOSI.GPIO_PinConfig.GPIO_PinMode = GPIO_OUT_ALTFN_PP_10;
+	SPI_MOSI.GPIO_PinConfig.GPIO_PinNumber = GPIO_Pin_7;
+
+	SPI_CLK.pGPIOBx = GPIOA;
+	SPI_CLK.GPIO_PinConfig.GPIO_PinMode = GPIO_OUT_ALTFN_PP_10;
+	SPI_CLK.GPIO_PinConfig.GPIO_PinNumber = GPIO_Pin_5;
+
+	SPI_MISO.pGPIOBx = GPIOA;
+	SPI_MISO.GPIO_PinConfig.GPIO_PinMode = GPIO_IN_FLOATING;
+	SPI_MISO.GPIO_PinConfig.GPIO_PinNumber = GPIO_Pin_6;
+
+	GPIO_init(&SPI_MISO);
+	GPIO_init(&SPI_MOSI);
+	GPIO_init(&SPI_CLK);
+	GPIO_init(&SPI_NSS);
+}
+
+void SPI1_Init(void)
+{
+	SPI_Handler_t SPIA;
+	SPIA.pSPIx = SPI1;
+	SPIA.SPI_config.SPI_DeviceMode = SPI_DEVICE_MODE_MASTER;
+	SPIA.SPI_config.SPI_BusConfig = SPI_BUS_CONFIG_FDPX;
+	SPIA.SPI_config.SPI_Speed = SPI_CLOCK_DIV_2;
+	SPIA.SPI_config.SPI_CPOL = SPI_CPOL_0_IDLE;
+	SPIA.SPI_config.SPI_CPHA = SPI_CPHA_1ST_TRANSIT;
+	SPIA.SPI_config.SPI_SSM = SPI_SSM_DI;
+	SPIA.SPI_config.SPI_DFF = SPI_DFF_8BITS;
+
+	SPI_init(&SPIA);
+}
+
+
+
+
+

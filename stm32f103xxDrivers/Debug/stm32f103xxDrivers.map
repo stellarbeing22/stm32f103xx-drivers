@@ -371,8 +371,8 @@ Discarded input sections
  .rodata        0x00000000       0x10 ./drivers/src/stm32f103xx_i2c_drivers.o
  .text.RCC_getPCLK1value
                 0x00000000       0xe0 ./drivers/src/stm32f103xx_i2c_drivers.o
- .debug_info    0x00000000      0x54d ./drivers/src/stm32f103xx_i2c_drivers.o
- .debug_abbrev  0x00000000      0x1a1 ./drivers/src/stm32f103xx_i2c_drivers.o
+ .debug_info    0x00000000      0x554 ./drivers/src/stm32f103xx_i2c_drivers.o
+ .debug_abbrev  0x00000000      0x1b3 ./drivers/src/stm32f103xx_i2c_drivers.o
  .debug_aranges
                 0x00000000       0x60 ./drivers/src/stm32f103xx_i2c_drivers.o
  .debug_rnglists

@@ -1,0 +1,119 @@
+/*
+ * SPI_TEST.c
+ *
+ *  Created on: Oct 2, 2025
+ *      Author: stellarbeing22
+ */
+
+
+/*
+ * main.c
+ *
+ *  Created on: Sep 23, 2025
+ *      Author: stellarbeing22
+ */
+#include <string.h>
+#include "stm32f103xx.h"
+
+/*
+ * SPI1_NSS  --> PA4
+ * SPI1_SCK  --> PA5
+ * SPI1_MISO --> PA6
+ * SPI1_MOSI --> PA7
+ * GPIO_AFIO --> 0
+ * 0: No remap (NSS/PA4, SCK/PA5, MISO/PA6, MOSI/PA7)
+ */
+
+
+void SPI1_GPIO_Init(void);
+void SPI1_Init(void);
+void SPI1_BTN_Init();
+
+int main(void)
+{
+	char user_data[] = "Hello World!";
+
+	SPI1_GPIO_Init();
+	SPI1_BTN_Init();
+
+	while(1)
+	{
+		SPI1_Init();
+
+		SPI_SSOEConfig(SPI1,ENABLE);
+
+		while(!GPIO_ReadFromInputPin(GPIOC, GPIO_Pin_13))
+		//Enabling the SPI2 Peripheral
+		SPI_PeripheralControl(SPI1,ENABLE);
+
+		//Send data through the MOSI line
+		SPI_SendData(SPI1,(uint8_t *)user_data,strlen(user_data));
+
+		while(SPI_GetFlagStatus(SPI1, SPI_BSY_FLAG));
+
+		SPI_PeripheralControl(SPI1,DISABLE);
+
+	}
+}
+
+
+
+
+
+
+void SPI1_GPIO_Init(void)
+{
+	GPIO_Handler_t SPI_NSS,SPI_MOSI,SPI_CLK; //As master MOSI, CLK and NSS lare output
+	GPIO_Handler_t SPI_MISO;                 // As master MISO is input
+
+	SPI_NSS.pGPIOBx = GPIOA;
+	SPI_NSS.GPIO_PinConfig.GPIO_PinMode = GPIO_OUT_PP_10;
+	SPI_NSS.GPIO_PinConfig.GPIO_PinNumber = GPIO_Pin_4;
+
+	SPI_MOSI.pGPIOBx = GPIOA;
+	SPI_MOSI.GPIO_PinConfig.GPIO_PinMode = GPIO_OUT_ALTFN_PP_10;
+	SPI_MOSI.GPIO_PinConfig.GPIO_PinNumber = GPIO_Pin_7;
+
+	SPI_CLK.pGPIOBx = GPIOA;
+	SPI_CLK.GPIO_PinConfig.GPIO_PinMode = GPIO_OUT_ALTFN_PP_10;
+	SPI_CLK.GPIO_PinConfig.GPIO_PinNumber = GPIO_Pin_5;
+
+	SPI_MISO.pGPIOBx = GPIOA;
+	SPI_MISO.GPIO_PinConfig.GPIO_PinMode = GPIO_IN_FLOATING;
+	SPI_MISO.GPIO_PinConfig.GPIO_PinNumber = GPIO_Pin_6;
+
+	GPIO_init(&SPI_MISO);
+	GPIO_init(&SPI_MOSI);
+	GPIO_init(&SPI_CLK);
+	GPIO_init(&SPI_NSS);
+}
+
+void SPI1_Init(void)
+{
+	SPI_Handler_t SPIA;
+	SPIA.pSPIx = SPI1;
+	SPIA.SPI_config.SPI_DeviceMode = SPI_DEVICE_MODE_MASTER;
+	SPIA.SPI_config.SPI_BusConfig = SPI_BUS_CONFIG_FDPX;
+	SPIA.SPI_config.SPI_Speed = SPI_CLOCK_DIV_2;
+	SPIA.SPI_config.SPI_CPOL = SPI_CPOL_0_IDLE;
+	SPIA.SPI_config.SPI_CPHA = SPI_CPHA_1ST_TRANSIT;
+	SPIA.SPI_config.SPI_SSM = SPI_SSM_DI;
+	SPIA.SPI_config.SPI_DFF = SPI_DFF_8BITS;
+
+	SPI_init(&SPIA);
+}
+
+void SPI1_BTN_Init()
+{
+		GPIO_Handler_t GPIO_BTN;
+		GPIO_BTN.pGPIOBx = GPIOC;
+		GPIO_BTN.GPIO_PinConfig.GPIO_PinNumber = GPIO_Pin_13;
+		GPIO_BTN.GPIO_PinConfig.GPIO_PinMode = GPIO_IN_FLOATING;
+
+		GPIO_init(&GPIO_BTN);
+}
+
+
+
+
+
