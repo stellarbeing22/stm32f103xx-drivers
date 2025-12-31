@@ -7,6 +7,14 @@
 
 #include "stm32f103xx_i2c_drivers.h"
 
+//the array name says it all, the prescalers for AHB bus and APB1 bus
+uint16_t AHB_Prescaler[8] = {2,4,8,16,32,64,128,256};
+uint8_t APB1_Prescaler[4] = {2,4,8,16};
+
+static void I2C_GenerateStartCondition(I2C_RegDef_t *pI2Cx);
+static void I2C_ExecuteAddressPhase(I2C_RegDef_t *pI2CHandle, uint8_t SlaveAddr);
+
+
 
 /* GPIO peripheral clock */
 
@@ -167,7 +175,7 @@ void I2C_init(I2C_Handler_t *pI2CHandle)
  *
  * @return                    - None
  */
-void I2C_Deinit(SPI_RegDef_t *pI2Cx)
+void I2C_Deinit(I2C_RegDef_t *pI2Cx)
 {
 	if((pI2Cx == I2C1))
 	{
@@ -206,11 +214,13 @@ void I2C_Deinit(SPI_RegDef_t *pI2Cx)
 void I2CmasterSendData(I2C_Handler_t *pI2CHandle, uint8_t *pTxBuffer, uint32_t Len, uint8_t SlaveAddr)
 {
 	//1. generate the START condition
-	//2. Confirm that the start generation is competed by checking the SB flaf in the SR1 reg
+	I2C_GenerateStartCondition(pI2CHandle->pI2Cx);
+	//2. Confirm that the start generation is competed by checking the SB flag in the SR1 reg
 	//note: until SB is cleared SCL will be streached (pulled to LOW)
+	while(!I2C_GetFlagStatus(pI2CHandle->pI2Cx, I2C_FLAG_SB));
 
 	//3. send the address of the slave with e/wr bit set to w(0) (total 8 bits)
-
+	I2C_ExecuteAddressPhase(pI2CHandle->pI2Cx, SlaveAddr);
 	//4. confirm the address phase is completed by checking the ADDR flag in SR1
 
 	//5. clear the ADDR flag according to its software sequence
@@ -260,7 +270,11 @@ void I2C_IRQPriorityConfig(uint8_t IRQNumber,uint32_t IRQPriority)
 /* Other Peripheral Control APIs */
 uint8_t I2C_GetFlagStatus(I2C_RegDef_t *pI2Cx, uint32_t FlagName)
 {
-	return 0;
+	if(pI2Cx->SR1 & FlagName)
+	{
+		return FLAG_SET;
+	}
+	return FLAG_RESET;
 }
 
 void I2C_PeripheralControl(I2C_RegDef_t *pI2Cx, uint8_t En_Or_Di)
@@ -314,9 +328,6 @@ void I2C_PeripheralControl(I2C_RegDef_t *pI2Cx, uint8_t En_Or_Di)
 	 //and PPRE1_Value is the clock div(APB1)
 	 uint8_t clksrc, AHB_Prescaler_Value,APB1_Prescaler_Value, HPRE_Value, PPRE1_Value;
 
-	 //the array name says it all, the prescalers for AHB bus and APB1 bus
-	 uint16_t AHB_Prescaler[8] = {2,4,8,16,32,64,128,256};
-	 uint8_t APB1_Prescaler[4] = {2,4,8,16};
 
 	 /*Get source clock speed, check if = 0/1/2
 	  * 0 => HSI
@@ -389,3 +400,16 @@ void I2C_PeripheralControl(I2C_RegDef_t *pI2Cx, uint8_t En_Or_Di)
   * uint32_t RCC_getPLLOutputClk()
   * {}
   * */
+
+static void I2C_GenerateStartCondition(I2C_RegDef_t *pI2Cx)
+{
+	pI2Cx->CR1 |= (1<<I2C_CR1_START);
+}
+
+static void I2C_ExecuteAddressPhase(I2C_RegDef_t *pI2Cx, uint8_t SlaveAddr)
+{
+	SlaveAddr = SlaveAddr << 1; //make space for r/w bit
+	SlaveAddr &= ~(1);
+	pI2Cx->DR = SlaveAddr;
+}
+

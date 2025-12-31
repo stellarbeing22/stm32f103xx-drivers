@@ -220,7 +220,7 @@ void SPI_SendData(SPI_RegDef_t *pSPIx, uint8_t *pTxBuffer, uint32_t len)
 	while(len > 0)
 	{
 		//1Wait for the Tx flag
-		while(SPI_GetFlagStatus(pSPIx, SPI_TXE_FLAG) == FLAG_RESET);
+		while(SPI_GetFlagStatus(pSPIx, SPI_FLAG_TXE) == FLAG_RESET);
 
 		//2. Check DFF, 0-> 8 bit, 1->16bit
 		if(pSPIx->CR1 & (1<<SPI_CR1_DFF))
@@ -285,7 +285,7 @@ void SPI_RecieveData(SPI_RegDef_t *pSPIx, uint8_t *pRxBuffer, uint32_t len)
 	while(len > 0)
 	{
 		//1 Wait for the RXNE flag
-		while(SPI_GetFlagStatus(pSPIx, SPI_RXNE_FLAG) == FLAG_RESET);
+		while(SPI_GetFlagStatus(pSPIx, SPI_FLAG_RXNE) == FLAG_RESET);
 
 		//2. Check DFF, 0-> 8 bit, 1->16bit
 		if(pSPIx->CR1 & (1<<SPI_CR1_DFF))

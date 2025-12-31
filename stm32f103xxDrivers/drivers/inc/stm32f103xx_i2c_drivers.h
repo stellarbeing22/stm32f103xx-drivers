@@ -87,8 +87,25 @@ typedef struct
 
 //3.3
 //FM Duty cycle
-#define I2C_DUTY_2                         0          //tlow /thigh = 2
-#define I2C_DUTY_16_9                      1          //tlow /thigh = 16/9 (see CCR)
+#define I2C_DUTY_2                          0          //tlow /thigh = 2
+#define I2C_DUTY_16_9                       1          //tlow /thigh = 16/9 (see CCR)
+
+
+//3.4
+//Flags
+/* I2C related status flag macros */
+
+#define I2C_FLAG_SB                         (1<<I2C_SR1_SB     )
+#define I2C_FLAG_ADDR                       (1<<I2C_SR1_ADDR   )
+#define I2C_FLAG_BTF                        (1<<I2C_SR1_BTF    )
+#define I2C_FLAG_RXNE                       (1<<I2C_SR1_RxNE   )
+#define I2C_FLAG_TXE                        (1<<I2C_SR1_TxE    )
+#define I2C_FLAG_OVR                        (1<<I2C_SR1_OVR    )
+#define I2C_FLAG_STOPF                      (1<<I2C_SR1_STOPF  )
+#define I2C_FLAG_BERR                       (1<<I2C_SR1_BERR   )
+#define I2C_FLAG_AV                         (1<<I2C_SR1_AF     )
+#define I2C_FLAG_TIMEOUT                    (1<<I2C_SR1_TIMEOUT)
+
 
 
 
@@ -104,7 +121,7 @@ void I2C_PeriClockControl(I2C_RegDef_t *pI2Cx, uint8_t En_or_Di);
 /* Init and Deinit */
 
 void I2C_init(I2C_Handler_t *pI2CHandle);
-void I2C_Deinit(SPI_RegDef_t *pI2Cx);
+void I2C_Deinit(I2C_RegDef_t *pI2Cx);
 
 /* Data send and receive */
 //TODO
