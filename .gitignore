@@ -1,4 +1,6 @@
-# Build output
+# =========================
+# Build output (toolchain)
+# =========================
 *.o
 *.elf
 *.bin
@@ -6,25 +8,42 @@
 *.map
 *.lst
 *.d
+*.su
 
-# IDE settings
+stm32f103xxDrivers/Debug/
+stm32f103xxDrivers/Release/
+stm32f103xxDrivers/build/
+
+# =========================
+# STM32CubeIDE / Eclipse
+# =========================
+stm32f103xxDrivers/.settings/
+stm32f103xxDrivers/.project
+stm32f103xxDrivers/.cproject
+stm32f103xxDrivers/*.launch
+
+# Workspace-level (never in repo)
+.metadata/
+
+# =========================
+# Other IDEs
+# =========================
 .vscode/
-.settings/
-.project
-.cproject
 .idea/
-*.launch
 *.uvproj*
 *.uvoptx
 *.suo
 *.user
+
+# =========================
+# Logs / temp
+# =========================
 *.log
-
-# OS junk
-.DS_Store
-Thumbs.db
-
-# Misc
 *.bak
 *.swp
-.metadata/
+
+# =========================
+# OS junk
+# =========================
+.DS_Store
+Thumbs.db

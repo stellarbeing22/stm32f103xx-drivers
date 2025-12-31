@@ -1,9 +1,0 @@
-../drivers/src/stm32f103xx_i2c_drivers.c:26:6:I2C_PeriClockControl	4
-../drivers/src/stm32f103xx_i2c_drivers.c:107:6:I2C_init	3
-../drivers/src/stm32f103xx_i2c_drivers.c:170:6:I2C_Deinit	1
-../drivers/src/stm32f103xx_i2c_drivers.c:186:6:I2C_IRQInterruptConfig	1
-../drivers/src/stm32f103xx_i2c_drivers.c:199:6:I2C_IRQPriorityConfig	1
-../drivers/src/stm32f103xx_i2c_drivers.c:203:9:I2C_GetFlagStatus	1
-../drivers/src/stm32f103xx_i2c_drivers.c:208:6:I2C_PeripheralControl	2
-../drivers/src/stm32f103xx_i2c_drivers.c:234:14:I2C_ApplicationEventCallback	1
-../drivers/src/stm32f103xx_i2c_drivers.c:249:11:RCC_getPCLK1value	6

@@ -1,7 +1,0 @@
-"./Src/SPI_IT.o"
-"./Src/syscalls.o"
-"./Src/sysmem.o"
-"./Startup/startup_stm32f103rbtx.o"
-"./drivers/src/stm32f103xx_gpio_drivers.o"
-"./drivers/src/stm32f103xx_i2c_drivers.o"
-"./drivers/src/stm32f103xx_spi_drivers.o"
