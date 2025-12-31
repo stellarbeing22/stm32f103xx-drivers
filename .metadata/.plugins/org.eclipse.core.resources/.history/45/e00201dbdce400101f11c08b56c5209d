@@ -406,12 +406,6 @@ typedef struct                    /*------------SPI Register Definition---------
 #define SPI1_REG_RESET             do{ (RCC->APB2RSTR |= (1<<12)); (RCC->APB2RSTR &= ~(1<<12));} while(0)  //set and reset the RegReset bit of SPI1
 #define SPI2_REG_RESET             do{ (RCC->APB2RSTR |= (1<<14)); (RCC->APB2RSTR &= ~(1<<14));} while(0)  //set and reset the RegReset bit of SPI2
 
-//8.3
-//I2Cx Register Reset
-#define I2C1_REG_RESET             do{ (RCC->APB1RSTR |= (1<<21)); (RCC->APB1RSTR &= ~(1<<21));} while(0)  //set and reset the RegReset bit of I2C1
-#define I2C2_REG_RESET             do{ (RCC->APB1RSTR |= (1<<22)); (RCC->APB1RSTR &= ~(1<<22));} while(0)  //set and reset the RegReset bit of I2C2
-
-
 
 
 /* =========================================================================

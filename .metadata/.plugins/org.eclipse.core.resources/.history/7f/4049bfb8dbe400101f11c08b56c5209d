@@ -167,66 +167,8 @@ void I2C_init(I2C_Handler_t *pI2CHandle)
  *
  * @return                    - None
  */
-void I2C_Deinit(SPI_RegDef_t *pI2Cx)
-{
-	if((pI2Cx == I2C1))
-	{
-		I2C1_REG_RESET;
-	}else if((pI2Cx == I2C2))
-	{
-		I2C2_REG_RESET;
-	}
-}
-
-/**
- * @fn                        - I2CmasterSendData
- *
- * @brief                     - Transmits a block of data from the I2C master to a specified slave
- *                               using polling (blocking) mode.
- *
- * @param[in]                 - pI2CHandle  Pointer to the I2C handle structure containing
- *                              peripheral base address and configuration.
- *
- * @param[in]                 - pTxBuffer  Pointer to the transmit buffer holding data to be sent.
- *
- * @param[in]                 - Len Number of bytes to transmit.
- *
- * @param[in]                 - SlaveAddr  7-bit I2C slave address.
- *
- * @return  void
- */
-
-
-/*
- *          This function generates a START condition, sends the 7-bit slave
- *          address with write intent, transmits the data bytes sequentially,
- *          and finally generates a STOP condition. The function blocks until
- *          the entire transmission is complete. It assumes the I2C peripheral
- *          is already initialized and enabled.*/
-void I2CmasterSendData(I2C_Handler_t *pI2CHandle, uint8_t *pTxBuffer, uint32_t Len, uint8_t SlaveAddr)
-{
-	//1. generate the START condition
-	//2. Confirm that the start generation is competed by checking the SB flaf in the SR1 reg
-	//note: until SB is cleared SCL will be streached (pulled to LOW)
-
-	//3. send the address of the slave with e/wr bit set to w(0) (total 8 bits)
-
-	//4. confirm the address phase is completed by checking the ADDR flag in SR1
-
-	//5. clear the ADDR flag according to its software sequence
-	//note: until ADDR us cleared SCL will be streached (pulled to LOW)
-
-	//6. send the data until len != 0
-
-	//7. when Len == 0 wait for TXE = 1 and BTF  = 1 before genrating the STOP conditon
-	//note: TXE = 1 AND BTF = 1 means that both SR and DR are empty and next transmission should beigin
-	//when BTF = 1 SCL will be streached (pulled to LOW)
-
-	//8.Generate the STOP conditon and master need not to wait for th completion of the stop condition
-	//note: generating STOP automatically clears the BTF
-}
-
-
+void I2C_Deinit(SPI_RegDef_t *pSPIx)
+{}
 
 
 /* IQR config and ISR handling */
