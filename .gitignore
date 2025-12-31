@@ -27,3 +27,4 @@ Thumbs.db
 # Misc
 *.bak
 *.swp
+.metadata/
