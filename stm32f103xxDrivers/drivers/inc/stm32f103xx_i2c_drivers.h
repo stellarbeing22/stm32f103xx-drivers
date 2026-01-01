@@ -125,7 +125,7 @@ void I2C_Deinit(I2C_RegDef_t *pI2Cx);
 
 /* Data send and receive */
 //TODO
-void I2CmasterSendData(I2C_Handler_t *pI2CHandle, uint8_t *pTxBuffer, uint32_t Len, uint8_t SlaveAddr);
+void I2CmasterSendData(I2C_Handler_t *pI2CHandle, uint8_t *pTxBuffer, uint32_t len, uint8_t SlaveAddr);
 
 /* IQR config and ISR handling */
 void I2C_IRQInterruptConfig(uint8_t IRQNumber, uint8_t En_or_Di);
