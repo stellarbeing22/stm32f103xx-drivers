@@ -114,7 +114,6 @@ void I2C_PeriClockControl(I2C_RegDef_t *pI2Cx, uint8_t En_or_Di)
  *
  * @note                      - Ensure peripheral clock is enabled before calling this function.
  */
-
 void I2C_init(I2C_Handler_t *pI2CHandle)
 {
 	uint32_t tempReg = 0;
@@ -209,11 +208,11 @@ void I2C_Deinit(I2C_RegDef_t *pI2Cx)
 
 
 /*
- *          This function generates a START condition, sends the 7-bit slave
- *          address with write intent, transmits the data bytes sequentially,
- *          and finally generates a STOP condition. The function blocks until
- *          the entire transmission is complete. It assumes the I2C peripheral
- *          is already initialized and enabled.*/
+ * This function generates a START condition, sends the 7-bit slave
+ * address with write intent, transmits the data bytes sequentially,
+ * and finally generates a STOP condition. The function blocks until
+ * the entire transmission is complete. It assumes the I2C peripheral
+ * is already initialized and enabled.*/
 void I2CmasterSendData(I2C_Handler_t *pI2CHandle, uint8_t *pTxBuffer, uint32_t len, uint8_t SlaveAddr)
 {
 	//1. generate the START condition
@@ -236,7 +235,7 @@ void I2CmasterSendData(I2C_Handler_t *pI2CHandle, uint8_t *pTxBuffer, uint32_t l
 	//6. send the data until len != 0
 	while(len != 0)
 	{
-		while(!I2C_GetFlagStatus(pI2CHandle->pI2Cx, I2C_FLAG_TXE)); //@Wait till Txe set
+		while(!I2C_GetFlagStatus(pI2CHandle->pI2Cx, I2C_FLAG_TXE)); //Wait till Txe set
 		pI2CHandle->pI2Cx->DR = *pTxBuffer;
 		pTxBuffer++;
 		len--;
@@ -245,8 +244,8 @@ void I2CmasterSendData(I2C_Handler_t *pI2CHandle, uint8_t *pTxBuffer, uint32_t l
 	//7. when Len == 0 wait for TXE = 1 and BTF  = 1 before genrating the STOP conditon
 	//note: TXE = 1 AND BTF = 1 means that both SR and DR are empty and next transmission should beigin
 	//when BTF = 1 SCL will be streached (pulled to LOW)
-	while(!I2C_GetFlagStatus(pI2CHandle->pI2Cx, I2C_FLAG_TXE)); //@Wait till Txe set
-	while(!I2C_GetFlagStatus(pI2CHandle->pI2Cx, I2C_FLAG_BTF)); //@Wait till BTF set
+	while(!I2C_GetFlagStatus(pI2CHandle->pI2Cx, I2C_FLAG_TXE)); //Wait till Txe set
+	while(!I2C_GetFlagStatus(pI2CHandle->pI2Cx, I2C_FLAG_BTF)); //Wait till BTF set
 
 	//8.Generate the STOP conditon and master need not to wait for th completion of the stop condition
 	//note: generating STOP automatically clears the BTF
