@@ -46,7 +46,7 @@ int main(void)
 		//Send data through the MOSI line
 		SPI_SendData(SPI1,(uint8_t *)user_data,datasize);
 
-		while(SPI_GetFlagStatus(SPI1, SPI_BSY_FLAG));
+		while(SPI_GetFlagStatus(SPI1, SPI_FLAG_BSY));
 
 		SPI_PeripheralControl(SPI1,DISABLE);
 

@@ -196,7 +196,7 @@ void I2C_Deinit(I2C_RegDef_t *pI2Cx)
  *
  * @param[in]                 - pI2CHandle  Pointer to the I2C handle structure containing
  *                              peripheral base address and configuration.
- *
+
  * @param[in]                 - pTxBuffer  Pointer to the transmit buffer holding data to be sent.
  *
  * @param[in]                 - Len Number of bytes to transmit.
@@ -249,7 +249,7 @@ void I2CmasterSendData(I2C_Handler_t *pI2CHandle, uint8_t *pTxBuffer, uint32_t l
 
 	//8.Generate the STOP conditon and master need not to wait for th completion of the stop condition
 	//note: generating STOP automatically clears the BTF
-	I2C_GenerateStartCondition(pI2CHandle->pI2Cx);
+	I2C_GenerateStopCondition(pI2CHandle->pI2Cx);
 }
 
 
